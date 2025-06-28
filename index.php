@@ -6,6 +6,7 @@
   <title>Ventas Slider</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=1.6">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -19,23 +20,14 @@
   </div>
 </nav>
 
-<div class="slider-wrapper">
+<div class="slider-wrapper transform transition duration-300 hover:scale-105 cursor-pointer">
   <button class="slider-btn left" id="btn-left">&lt;</button>
 
   <div class="card-container" id="slider">
-    <?php
-    $images = ["assets/1.webp","assets/2.webp","assets/3.webp","assets/4.webp","assets/5.webp","assets/6.webp","assets/7.webp","assets/8.webp","assets/9.webp","assets/10.webp","assets/11.webp","assets/12.webp","assets/13.webp"];
-    foreach ($images as $i) {
-      echo "
-      <div class='card'>
-        <img src='$i'>
-        <h1>Producto</h1>
-        <p>Descripcion</p>
-        <button class='buy-button btn btn-primary'>Comprar</button>
-      </div>
-      ";
-    }
-    ?>
+    <div class="d-flex overflow-auto gap-3 px-4" id="slider" style="scroll-behavior:smooth;">
+  <?php include 'app/obtener_productos.php'; ?>
+</div>
+
   </div>
 
   <button class="slider-btn right" id="btn-right">&gt;</button>

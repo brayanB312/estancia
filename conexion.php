@@ -1,0 +1,7 @@
+<?php
+$conexion = new mysqli("localhost", "root", "", "tienda_bd");
+
+if ($conexion->connect_error) { // ✅ Si hay un error, se detiene
+    die("Error de conexión: " . $conexion->connect_error);
+}
+?>
