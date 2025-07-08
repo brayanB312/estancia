@@ -7,6 +7,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=1.6">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/js/tienda.js?v=2"></script>
+  
 </head>
 <body>
 
@@ -20,10 +22,10 @@
   </div>
 </nav>
 
-<div class="slider-wrapper transform transition duration-300 hover:scale-105 cursor-pointer">
+<div class="slider-wrapper transform transition duration-300 hover:scale-100 cursor-pointer">
   <button class="slider-btn left" id="btn-left">&lt;</button>
 
-  <div class="card-container" id="slider">
+  <div class="card-container duration-300 hover:scale-105" id="slider">
     <div class="d-flex overflow-auto gap-3 px-4" id="slider" style="scroll-behavior:smooth;">
   <?php include 'app/obtener_productos.php'; ?>
 </div>

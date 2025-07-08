@@ -1,9 +1,10 @@
 <?php
-include_once __DIR__ . '/../conexion.php';
+include_once(__DIR__ . '/../php/conexion.php');  // Retrocede un nivel desde /app
 
 $resultado = $conexion->query("SELECT * FROM productos");
 
 while ($producto = $resultado->fetch_assoc()) {
+    $id = $producto['id'];
     $img = htmlspecialchars($producto['imagen']);
     $nombre = htmlspecialchars($producto['nombre']);
     $descripcion = htmlspecialchars($producto['descripcion']);
@@ -15,14 +16,18 @@ while ($producto = $resultado->fetch_assoc()) {
                 <img src='$img' alt='$nombre' class='max-h-full max-w-full object-contain' />
             </div>
             <div class='p-4'>
-             <h5 class='text-lg font-semibold'>$nombre</h5>
-             <p class='text-sm text-gray-600 mb-2'>$descripcion</p>
-             <p class='text-green-600 font-bold mb-3'>$$precio</p>
-                 <a href='#' class='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'>Comprar</a>
+                <h5 class='text-lg font-semibold'>$nombre</h5>
+                <p class='text-sm text-gray-600 mb-2'>$descripcion</p>
+                <p class='text-green-600 font-bold mb-3'>$$precio</p>
+                <button 
+                    class='agregar-carrito btn btn-primary w-full transition duration-300 hover:scale-105'
+                    data-id='$id'
+                    data-nombre='$nombre'
+                    data-precio='$precio'>
+                    Comprar
+                </button>
             </div>
         </div>
-
-
     ";
 }
 ?>
