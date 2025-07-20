@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php'; // Asegúrate de que la ruta sea correcta
+include 'conexion.php'; 
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,30 +24,28 @@ include 'conexion.php'; // Asegúrate de que la ruta sea correcta
                 return;
             }
 
-            // Obtener IDs de los productos en el carrito
             const ids = carrito.map(item => item.id).join(',');
             
-            // Fetch para obtener datos actualizados desde PHP
             try {
                 const response = await fetch(`obtener_productos_carrito.php?ids=${ids}`);
                 const productos = await response.json();
 
-                // Combinar datos del carrito (cantidad) con info de la BD
+                
                 const carritoCompleto = carrito.map(item => {
                     const producto = productos.find(p => p.id == item.id);
                     return { ...producto, cantidad: item.cantidad };
                 });
 
-                // Mostrar productos en el HTML
+                
                 let html = '';
                 let total = 0;
                 
                 carritoCompleto.forEach(producto => {
-                    // Asegúrate de que precio sea un número
+                   
                     const precio = parseFloat(producto.precio); 
                     const subtotal = precio * producto.cantidad;
                     total += subtotal;
-                                
+
                     html += `
                         <div class="card mb-2">
                             <div class="card-body">
@@ -71,10 +69,10 @@ include 'conexion.php'; // Asegúrate de que la ruta sea correcta
             let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
             carrito = carrito.filter(item => item.id !== id);
             localStorage.setItem('carrito', JSON.stringify(carrito));
-            location.reload(); // Recargar para actualizar
+            location.reload(); 
         }
 
-        // Vaciar carrito
+        
         document.getElementById('vaciar-carrito').addEventListener('click', () => {
             localStorage.removeItem('carrito');
             location.reload();

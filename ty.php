@@ -3,7 +3,6 @@ include 'conexion.php';
 
 $pedido_id = $_GET['id'] ?? 0;
 
-// Obtener datos del pedido
 $stmt = $conexion->prepare("SELECT * FROM pedidos WHERE id = ?");
 $stmt->bind_param("i", $pedido_id);
 $stmt->execute();

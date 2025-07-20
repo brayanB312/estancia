@@ -1,5 +1,5 @@
 <?php
-include_once(__DIR__ . '/../php/conexion.php');  // Retrocede un nivel desde /app
+include_once(__DIR__ . '/../backend/php/conexion.php');  // Retrocede un nivel desde /app
 
 $resultado = $conexion->query("SELECT * FROM productos");
 
