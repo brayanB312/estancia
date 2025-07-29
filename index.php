@@ -1,82 +1,71 @@
 <?php
-// Configuración inicial
-$page_name = "Balatro";
-$title = "Balatro";
-$logo_url = "assets/logo.webp";
-
-// Incluir navbar con su función
 include 'components/navbar.php';
+include 'components/footer.php';
+include 'components/product_slider.php';
+require 'conn.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_name; ?></title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome (ya incluido en navbar.php) -->
-    
-    <!-- CSS Personalizado -->
-    <link rel="stylesheet" href="fronted/css/style.css?v=<?php echo time(); ?>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda</title>
+  <link rel="stylesheet" href="styles/index.css?v=1.5">
 </head>
 <body>
 
-    <!-- Navbar -->
-    <?php navbar($logo_url, $title); ?>
-    
-    <!-- Contenido principal (con margen superior para el navbar fijo) -->
-    <main class="main-content" style="margin-top: 75px;">
-        
-        <!-- Sección de navegación secundaria -->
-        <section class="secondary-navigation">
-            <div class="container">
-                <div class="d-flex justify-content-center py-3">
-                    <a href="#" class="mx-3 text-dark fw-bold">TIENDA</a>
-                    <a href="#" class="mx-3 text-dark fw-bold">NOSOTROS</a>
-                    <a href="#" class="mx-3 text-dark fw-bold">SERVICIOS</a>
-                </div>
-            </div>
-        </section>
+  <?php navbar(); ?>
 
-        <!-- Slider de productos -->
-        <section class="product-slider-section py-4">
-            <div class="container position-relative">
-                <button class="slider-arrow left-arrow" id="btn-left">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="slider-track-container">
-                    <div class="slider-track" id="slider-track">
-                        <?php include __DIR__ . '/app/obtener_productos.php'; ?>
-                    </div>
-                </div>
-                
-                <button class="slider-arrow right-arrow" id="btn-right">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </section>
-    </main>
+  <section class="main_section">
+    <div class="main1">
+      <h1>Las mejores ofertas</h1>
+      <a href="#feat"><button>Comprar</button></a>
+    </div>
+    <div class="main2">
+      <img src="assets/images/hero.png" alt="Hero">
+    </div>
+  </section>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/tienda.js?v=<?php echo time(); ?>"></script>
-    
-    <script>
-    // Slider functionality
-    const track = document.getElementById('slider-track');
-    if (track) {
-        document.getElementById('btn-left')?.addEventListener('click', () => {
-            track.scrollBy({ left: -300, behavior: 'smooth' });
-        });
-        document.getElementById('btn-right')?.addEventListener('click', () => {
-            track.scrollBy({ left: 300, behavior: 'smooth' });
-        });
-    }
-    </script>
+  <section class="featured_section">
+    <div class="productos_destacados" id="feat">
+      <?php 
+        // Obtener productos destacados de la base de datos
+        $query = "SELECT * FROM productos LIMIT 6";
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $productos = $stmt->fetchAll();
+
+        foreach($productos as $producto) {
+          echo "
+          <a href='producto.php?id={$producto['id']}'>
+            <div class='card'>
+              <div class='card_image_wrapper'>
+                <img src='{$producto['imagen']}' alt='{$producto['nombre']}'>
+              </div>
+              <div class='card_content'>
+                <h3>{$producto['nombre']}</h3>
+                <p>{$producto['descripcion']}</p>
+                <span>$".number_format($producto['precio'], 2)."</span>
+                <button class='buy-button agregar-carrito'
+                        data-id='{$producto['id']}'
+                        data-nombre='".htmlspecialchars($producto['nombre'])."'
+                        data-precio='{$producto['precio']}'>  
+                    Agregar al carrito    
+                </button>
+              </div>
+            </div>
+          </a>
+          ";
+        }
+      ?>
+    </div>
+  </section>
+
+  <?php product_slider("telefono"); ?>
+  <?php product_slider("calzado"); ?>
+
+  <?php footer(); ?>
+  <script src="carrito.js"></script>
 </body>
 </html>

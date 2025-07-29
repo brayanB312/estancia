@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  text-decoration: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F8F5F0;
+}
+
+/*MAIN SECTION*/
+
+.main_section {
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+
+.main1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.main1 h1 {
+  font-size: 4rem;
+}
+
+.main1 button {
+  padding: 12px 15px;
+  width: 200px;
+  cursor: pointer;
+  background-color: #000;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  color: #FFF;
+  transition: background-color 0.3s ease;
+}
+
+.main1 button:hover{
+  background-color: #222222;
+}
+
+.main2 img {
+  width: 50vw;
+  max-width: 800px;
+}
+
+/*MAIN SECTION*/
+
+/*PRODUCTOS DETACADOS*/
+
+.featured_section{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.productos_destacados{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  padding: 40px;
+  max-width: 1200px; 
+  place-items: center; 
+}
+
+.card{
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  width: fit-content;
+  padding: 0 20px 20px 20px;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+
+.card_content{
+  display: flex;
+  flex-direction: column;
+}
+
+.card_content h3{
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.card_content p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.card_content span {
+  font-weight: bold;
+  color: #222222;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.card_content button {
+  cursor: pointer;
+  background-color: #000;
+  padding: 12px;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  color: #FFF;
+  transition: background-color 0.3s ease;
+}
+
+.card_content button:hover {
+  background-color: #222222;
+}
+
+a{
+  color: #000;
+}
+
+/*PRODUCTOS DETACADOS*/
+
+/*SLIDERS*/
+
+.slider_title{
+  text-align: center;
+  margin-top: 100px;
+}
+
+/*SLIDERS*/
+
+
+/*MEDIAS*/
+
+@media (max-width: 900px) {
+
+  .productos_destacados{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main1 h1 {
+    text-align:center;
+  }
+
+  .main1 {
+    align-items: center;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .main_section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main2 img {
+    width: 80vw;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .productos_destacados{
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/*MEDIAS*/

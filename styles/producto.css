@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    text-decoration: none;
+}
+
+body {
+    background-color: #F8F5F0;
+}
+
+.producto_section {
+    width: 100%;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    min-height: 500px;
+}
+
+.producto_imagen img {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.producto_detalle {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.producto_detalle h2 {
+    font-size: 2rem;
+    color: #333;
+}
+
+.tipo {
+    font-size: 1.1rem;
+    color: #777;
+}
+
+.precio {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #222222;
+}
+
+.descripcion {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.btn_agregar {
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: white;
+    width: fit-content;
+    cursor: pointer;
+    background-color: #000;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    color: #FFF;
+    transition: background-color 0.3s ease;
+}
+
+.btn_agregar:hover {
+    background-color: #222222;
+}
