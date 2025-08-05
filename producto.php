@@ -1,13 +1,13 @@
 <?php
-
+session_start();
 include 'components/navbar.php';
 include 'components/footer.php';
-include 'components/product_slider.php';
+include 'components/product_slider_sin_botones.php'; // Cambiado a la versión sin botones
 
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    require  'conn.php';
+    require 'conn.php';
 
     $query = "SELECT * FROM productos WHERE id = :id";
     $stmt = $conn->prepare($query);
@@ -25,12 +25,10 @@ if(isset($_GET['id'])) {
         header('Location: index.php');
         exit();
     }
-
 } else {
     header('Location: index.php');
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -38,39 +36,37 @@ if(isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $nombre; ?></title>
+    <title><?php echo htmlspecialchars($nombre); ?></title>
     <link rel="stylesheet" href="styles/producto.css">
 </head>
 <body>
-
     <?php navbar(); ?>
 
     <section class="producto_section">
-    <div class="producto_imagen">
-        <img src="<?php echo $imagen; ?>" alt="<?php echo $nombre; ?>">
-    </div>
-    <div class="producto_detalle">
-        <h2><?php echo $nombre; ?></h2>
-        <p class="tipo"><?php echo $tipo; ?></p>
-        <span class="precio"><?php echo "$" . $precio ?></span>
-        <p class="descripcion"><?php echo $descripcion; ?></p>
-        <button class="btn_agregar agregar-carrito"
-                data-id="<?php echo $id; ?>"
-                data-nombre="<?php echo htmlspecialchars($nombre); ?>"
-                data-precio="<?php echo $precio; ?>">
-            Agregar al carrito
-        </button>
-    </div>
+        <div class="producto_imagen">
+            <img src="<?php echo htmlspecialchars($imagen); ?>" alt="<?php echo htmlspecialchars($nombre); ?>">
+        </div>
+        <div class="producto_detalle">
+            <h2><?php echo htmlspecialchars($nombre); ?></h2>
+            <p class="tipo"><?php echo htmlspecialchars($tipo); ?></p>
+            <span class="precio"><?php echo "$" . number_format($precio, 2); ?></span>
+            <p class="descripcion"><?php echo htmlspecialchars($descripcion); ?></p>
+            <button class="btn_agregar agregar-carrito"
+                    data-id="<?php echo $id; ?>"
+                    data-nombre="<?php echo htmlspecialchars($nombre); ?>"
+                    data-precio="<?php echo $precio; ?>">
+                Agregar al carrito
+            </button>
+        </div>
     </section>
 
-    <div style="background-color: #EFEFEF; padding: 50px 0; width=100%; text-align: center; margin-top: 50px; border-bottom: 1px solid #EEEEEE; border-top: 1px solid #EEEEEE;">
+    <div class="seccion_similares">
         <h2>Productos similares:</h2>
     </div>
 
-    <?php product_slider($tipo); ?>
+    <?php product_slider_sin_botones($tipo); // Usa la versión sin botones ?>
 
     <?php footer(); ?>
-
-    
+    <script src="carrito.js"></script>
 </body>
 </html>

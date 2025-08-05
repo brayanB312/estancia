@@ -62,8 +62,18 @@ require 'conn.php';
     </div>
   </section>
 
-  <?php product_slider("telefono"); ?>
-  <?php product_slider("calzado"); ?>
+  <?php
+  // Obtener todos los tipos distintos de productos
+  $query = "SELECT DISTINCT tipo FROM productos ORDER BY tipo";
+  $stmt = $conn->prepare($query);
+  $stmt->execute();
+  $tipos = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+  // Mostrar un slider por cada tipo
+  foreach ($tipos as $tipo) {
+      product_slider(ucfirst($tipo)); // ucfirst para capitalizar la primera letra
+  }
+  ?>
 
   <?php footer(); ?>
   <script src="carrito.js"></script>
