@@ -183,7 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class='buy-button agregar-carrito' 
                     data-id='$id'
                     data-nombre='$nombre'
-                    data-precio='$precio'>
+                    data-precio='{$p['precio']}'
+                    data-imagen='$imagen'>
                 Agregar al carrito
             </button>
         </div>";

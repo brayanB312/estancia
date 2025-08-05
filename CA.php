@@ -24,6 +24,6 @@ try {
     // Descomenta la siguiente línea para auto-eliminarse
     // unlink(__FILE__);
 } catch(PDOException $e) {
-    echo "❌ Error: ".htmlspecialchars($e->getMessage());
+    echo " Error: ".htmlspecialchars($e->getMessage());
 }
 ?>
