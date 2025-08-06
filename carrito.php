@@ -10,6 +10,7 @@ include 'components/footer.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles/carrito.css">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -48,7 +49,7 @@ include 'components/footer.php';
       <div id="cart-total">$0.00</div>
     </div>
 
-    <button class="btn-primary">Proceder al Pago</button>
+    <button class="btn-primary" id="stripe-checkout">Pagar con Stripe</button>
     <button class="btn-secondary">Continuar Comprando</button>
   </aside>
 

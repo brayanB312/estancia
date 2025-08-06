@@ -131,3 +131,28 @@ window.removeItem = function(idx) {
   renderCart();
   updateCartContadorNavbar();
 }
+
+// Stripe Checkout integration
+if (document.getElementById('stripe-checkout')) {
+  document.getElementById('stripe-checkout').onclick = function() {
+    const carrito = localStorage.getItem('carrito');
+    if (!carrito || carrito === '[]') {
+      alert('El carrito está vacío');
+      return;
+    }
+    fetch('stripe_checkout.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: 'carrito=' + encodeURIComponent(carrito)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.id && data.id.startsWith('cs_')) {
+        var stripe = Stripe('pk_test_51RsiACAJJRFMxL6dEQQ0IBJG57QkYeLWKd8A5KGxWkhPu44BUD3iHOOolKlCLVHxZQA41TNVl9ZuHOb5R8gCtIdd00H7f9FGH4');
+        stripe.redirectToCheckout({ sessionId: data.id });
+      } else {
+        alert('Error con Stripe: ' + (data.error || 'Error desconocido'));
+      }
+    });
+  };
+}
