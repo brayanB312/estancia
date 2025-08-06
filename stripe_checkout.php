@@ -3,11 +3,16 @@ require 'vendor/autoload.php';
 
 header('Content-Type: application/json');
 
-// Tu clave secreta de Stripe (pruebas)
+// Configuración de Stripe
 \Stripe\Stripe::setApiKey('sk_test_51RsiACAJJRFMxL6dn6loP1fIWMDX9js3QLU0xBxCeQCr0TxEmrRgpJK5BiuZm2lIzdvzNHscfuUZRwqiFA0Wc95Q00qW67N8p9');
 
+// Conexión a la base de datos
+$db = new mysqli('localhost', 'root', '', 'tienda');
+if ($db->connect_error) {
+    die(json_encode(['error' => 'Error de conexión a la base de datos']));
+}
 
-
+// Obtener datos del POST
 $carrito = isset($_POST['carrito']) ? json_decode($_POST['carrito'], true) : [];
 $direccion_calle = isset($_POST['direccion_calle']) ? $_POST['direccion_calle'] : '';
 $direccion_numero = isset($_POST['direccion_numero']) ? $_POST['direccion_numero'] : '';
@@ -16,22 +21,54 @@ $direccion_ciudad = isset($_POST['direccion_ciudad']) ? $_POST['direccion_ciudad
 $direccion_estado = isset($_POST['direccion_estado']) ? $_POST['direccion_estado'] : '';
 $direccion_cp = isset($_POST['direccion_cp']) ? $_POST['direccion_cp'] : '';
 
-$line_items = [];
+// Calcular total del carrito
+$total = 0;
 foreach ($carrito as $item) {
-    $line_items[] = [
-        'price_data' => [
-            'currency' => 'mxn',
-            'product_data' => [
-                'name' => $item['nombre'],
-                'images' => [isset($item['imagen']) ? $item['imagen'] : ''],
-            ],
-            'unit_amount' => intval($item['precio'] * 100),
-        ],
-        'quantity' => $item['cantidad'],
-    ];
+    $total += $item['precio'] * $item['cantidad'];
 }
+$total += $total * 0.10; // Agregar 10% de impuestos
 
 try {
+    // 1. Crear el pedido en la base de datos
+    $stmt = $db->prepare("INSERT INTO pedidos (total, direccion_calle, direccion_numero, direccion_colonia, direccion_ciudad, direccion_estado, direccion_cp) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("dssssss", $total, $direccion_calle, $direccion_numero, $direccion_colonia, $direccion_ciudad, $direccion_estado, $direccion_cp);
+    $stmt->execute();
+    $pedido_id = $db->insert_id;
+    $stmt->close();
+
+    // 2. Insertar los productos del pedido
+    $stmt = $db->prepare("INSERT INTO pedido_productos (pedido_id, producto_id, cantidad, precio_unitario, talla, color) VALUES (?, ?, ?, ?, ?, ?)");
+    foreach ($carrito as $item) {
+        $stmt->bind_param(
+            "iiidss",
+            $pedido_id,
+            $item['id'],
+            $item['cantidad'],
+            $item['precio'],
+            $item['talla'],
+            $item['color']
+        );
+        $stmt->execute();
+    }
+    $stmt->close();
+
+    // 3. Crear los line items para Stripe
+    $line_items = [];
+    foreach ($carrito as $item) {
+        $line_items[] = [
+            'price_data' => [
+                'currency' => 'mxn',
+                'product_data' => [
+                    'name' => $item['nombre'],
+                    'images' => [isset($item['imagen']) ? $item['imagen'] : ''],
+                ],
+                'unit_amount' => intval($item['precio'] * 100),
+            ],
+            'quantity' => $item['cantidad'],
+        ];
+    }
+
+    // 4. Crear la sesión de Stripe
     $session = \Stripe\Checkout\Session::create([
         'payment_method_types' => ['card'],
         'line_items' => $line_items,
@@ -39,6 +76,7 @@ try {
         'success_url' => 'http://localhost/estancia/success.html',
         'cancel_url' => 'http://localhost/estancia/cancel.html',
         'metadata' => [
+            'pedido_id' => $pedido_id,
             'direccion_calle' => $direccion_calle,
             'direccion_numero' => $direccion_numero,
             'direccion_colonia' => $direccion_colonia,
@@ -47,7 +85,8 @@ try {
             'direccion_cp' => $direccion_cp
         ]
     ]);
-    echo json_encode(['id' => $session->id]);
+
+    echo json_encode(['id' => $session->id, 'pedido_id' => $pedido_id]);
 } catch (Exception $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
