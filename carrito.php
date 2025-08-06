@@ -49,7 +49,33 @@ include 'components/footer.php';
       <div id="cart-total">$0.00</div>
     </div>
 
-    <button class="btn-primary" id="stripe-checkout">Pagar con Stripe</button>
+    <form id="checkout-form" style="margin-bottom:1em;">
+      <div style="margin-bottom:0.5em;">
+        <label for="direccion_calle" style="display:block;">Calle:</label>
+        <input type="text" id="direccion_calle" name="direccion_calle" required style="width:100%;padding:8px;" placeholder="Calle">
+      </div>
+      <div style="margin-bottom:0.5em;">
+        <label for="direccion_numero" style="display:block;">Número:</label>
+        <input type="text" id="direccion_numero" name="direccion_numero" required style="width:100%;padding:8px;" placeholder="Número">
+      </div>
+      <div style="margin-bottom:0.5em;">
+        <label for="direccion_colonia" style="display:block;">Colonia:</label>
+        <input type="text" id="direccion_colonia" name="direccion_colonia" required style="width:100%;padding:8px;" placeholder="Colonia">
+      </div>
+      <div style="margin-bottom:0.5em;">
+        <label for="direccion_ciudad" style="display:block;">Ciudad:</label>
+        <input type="text" id="direccion_ciudad" name="direccion_ciudad" required style="width:100%;padding:8px;" placeholder="Ciudad">
+      </div>
+      <div style="margin-bottom:0.5em;">
+        <label for="direccion_estado" style="display:block;">Estado:</label>
+        <input type="text" id="direccion_estado" name="direccion_estado" required style="width:100%;padding:8px;" placeholder="Estado">
+      </div>
+      <div style="margin-bottom:1em;">
+        <label for="direccion_cp" style="display:block;">Código Postal:</label>
+        <input type="text" id="direccion_cp" name="direccion_cp" required style="width:100%;padding:8px;" placeholder="Código Postal">
+      </div>
+      <button class="btn-primary" id="stripe-checkout" type="submit">Pagar con Stripe</button>
+    </form>
     <button class="btn-secondary">Continuar Comprando</button>
   </aside>
 

@@ -133,17 +133,36 @@ window.removeItem = function(idx) {
 }
 
 // Stripe Checkout integration
-if (document.getElementById('stripe-checkout')) {
-  document.getElementById('stripe-checkout').onclick = function() {
+if (document.getElementById('checkout-form')) {
+  document.getElementById('checkout-form').onsubmit = function(e) {
+    e.preventDefault();
     const carrito = localStorage.getItem('carrito');
+    const calle = document.getElementById('direccion_calle').value.trim();
+    const numero = document.getElementById('direccion_numero').value.trim();
+    const colonia = document.getElementById('direccion_colonia').value.trim();
+    const ciudad = document.getElementById('direccion_ciudad').value.trim();
+    const estado = document.getElementById('direccion_estado').value.trim();
+    const cp = document.getElementById('direccion_cp').value.trim();
     if (!carrito || carrito === '[]') {
       alert('El carrito está vacío');
       return;
     }
+    if (!calle || !numero || !colonia || !ciudad || !estado || !cp) {
+      alert('Por favor completa todos los campos de dirección.');
+      return;
+    }
+    const params =
+      'carrito=' + encodeURIComponent(carrito) +
+      '&direccion_calle=' + encodeURIComponent(calle) +
+      '&direccion_numero=' + encodeURIComponent(numero) +
+      '&direccion_colonia=' + encodeURIComponent(colonia) +
+      '&direccion_ciudad=' + encodeURIComponent(ciudad) +
+      '&direccion_estado=' + encodeURIComponent(estado) +
+      '&direccion_cp=' + encodeURIComponent(cp);
     fetch('stripe_checkout.php', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: 'carrito=' + encodeURIComponent(carrito)
+      body: params
     })
     .then(res => res.json())
     .then(data => {
