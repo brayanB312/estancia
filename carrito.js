@@ -133,45 +133,95 @@ window.removeItem = function(idx) {
 }
 
 // Stripe Checkout integration
-if (document.getElementById('checkout-form')) {
-  document.getElementById('checkout-form').onsubmit = function(e) {
-    e.preventDefault();
-    const carrito = localStorage.getItem('carrito');
-    const calle = document.getElementById('direccion_calle').value.trim();
-    const numero = document.getElementById('direccion_numero').value.trim();
-    const colonia = document.getElementById('direccion_colonia').value.trim();
-    const ciudad = document.getElementById('direccion_ciudad').value.trim();
-    const estado = document.getElementById('direccion_estado').value.trim();
-    const cp = document.getElementById('direccion_cp').value.trim();
-    if (!carrito || carrito === '[]') {
-      alert('El carrito está vacío');
-      return;
-    }
-    if (!calle || !numero || !colonia || !ciudad || !estado || !cp) {
-      alert('Por favor completa todos los campos de dirección.');
-      return;
-    }
-    const params =
-      'carrito=' + encodeURIComponent(carrito) +
-      '&direccion_calle=' + encodeURIComponent(calle) +
-      '&direccion_numero=' + encodeURIComponent(numero) +
-      '&direccion_colonia=' + encodeURIComponent(colonia) +
-      '&direccion_ciudad=' + encodeURIComponent(ciudad) +
-      '&direccion_estado=' + encodeURIComponent(estado) +
-      '&direccion_cp=' + encodeURIComponent(cp);
-    fetch('stripe_checkout.php', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: params
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.id && data.id.startsWith('cs_')) {
-        var stripe = Stripe('pk_test_51RsiACAJJRFMxL6dEQQ0IBJG57QkYeLWKd8A5KGxWkhPu44BUD3iHOOolKlCLVHxZQA41TNVl9ZuHOb5R8gCtIdd00H7f9FGH4');
-        stripe.redirectToCheckout({ sessionId: data.id });
-      } else {
-        alert('Error con Stripe: ' + (data.error || 'Error desconocido'));
+
+// Stripe Checkout integration desde cero
+
+// Stripe Checkout paso por paso
+document.addEventListener('DOMContentLoaded', function() {
+  var checkoutForm = document.getElementById('checkout-form');
+  if (checkoutForm) {
+    checkoutForm.onsubmit = function(e) {
+      e.preventDefault();
+      console.log('[PASO 1] Submit iniciado');
+
+      // 1. Obtener datos del carrito y dirección
+      var carrito = localStorage.getItem('carrito');
+      var calle = document.getElementById('direccion_calle')?.value.trim() || '';
+      var numero = document.getElementById('direccion_numero')?.value.trim() || '';
+      var colonia = document.getElementById('direccion_colonia')?.value.trim() || '';
+      var ciudad = document.getElementById('direccion_ciudad')?.value.trim() || '';
+      var estado = document.getElementById('direccion_estado')?.value.trim() || '';
+      var cp = document.getElementById('direccion_cp')?.value.trim() || '';
+      console.log('[PASO 2] Datos obtenidos:', {carrito, calle, numero, colonia, ciudad, estado, cp});
+
+      // 2. Validaciones
+      if (!carrito || carrito === '[]') {
+        alert('El carrito está vacío');
+        console.error('[ERROR] Carrito vacío');
+        return;
       }
-    });
-  };
-}
+      if (!calle || !numero || !colonia || !ciudad || !estado || !cp) {
+        alert('Por favor completa todos los campos de dirección.');
+        console.error('[ERROR] Dirección incompleta', {calle, numero, colonia, ciudad, estado, cp});
+        return;
+      }
+      console.log('[PASO 3] Validaciones OK');
+
+      // 3. Guardar dirección en localStorage para success.html
+      localStorage.setItem('direccion_calle', calle);
+      localStorage.setItem('direccion_numero', numero);
+      localStorage.setItem('direccion_colonia', colonia);
+      localStorage.setItem('direccion_ciudad', ciudad);
+      localStorage.setItem('direccion_estado', estado);
+      localStorage.setItem('direccion_cp', cp);
+      console.log('[PASO 4] Dirección guardada en localStorage');
+
+      // 4. Preparar parámetros para el backend
+      var params =
+        'carrito=' + encodeURIComponent(carrito) +
+        '&direccion_calle=' + encodeURIComponent(calle) +
+        '&direccion_numero=' + encodeURIComponent(numero) +
+        '&direccion_colonia=' + encodeURIComponent(colonia) +
+        '&direccion_ciudad=' + encodeURIComponent(ciudad) +
+        '&direccion_estado=' + encodeURIComponent(estado) +
+        '&direccion_cp=' + encodeURIComponent(cp);
+      console.log('[PASO 5] Params preparados:', params);
+
+      // 5. Enviar datos al backend
+      fetch('stripe_checkout.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: params
+      })
+      .then(function(res) {
+        console.log('[PASO 6] Respuesta recibida, status:', res.status);
+        if (!res.ok) {
+          alert('Error en la respuesta del servidor: ' + res.status);
+          console.error('[ERROR] HTTP status', res.status);
+          return Promise.reject('HTTP status ' + res.status);
+        }
+        return res.json();
+      })
+      .then(function(data) {
+        console.log('[PASO 7] Data recibida del backend:', data);
+        if (data.id && data.id.startsWith('cs_')) {
+          try {
+            var stripe = Stripe('pk_test_51RsiACAJJRFMxL6dEQQ0IBJG57QkYeLWKd8A5KGxWkhPu44BUD3iHOOolKlCLVHxZQA41TNVl9ZuHOb5R8gCtIdd00H7f9FGH4');
+            console.log('[PASO 8] Stripe session creada, redirigiendo...');
+            stripe.redirectToCheckout({ sessionId: data.id });
+          } catch (err) {
+            alert('Error al inicializar Stripe: ' + err);
+            console.error('[ERROR] Stripe init:', err);
+          }
+        } else {
+          alert('Error con Stripe: ' + (data.error || 'Error desconocido'));
+          console.error('[ERROR] Stripe response:', data);
+        }
+      })
+      .catch(function(err) {
+        alert('Error en la petición a stripe_checkout.php: ' + err);
+        console.error('[ERROR] Fetch stripe_checkout.php:', err);
+      });
+    };
+  }
+});
