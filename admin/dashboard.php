@@ -82,7 +82,7 @@ $userCount = $conn->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
             <div class="stat-card">
                 <h3>Usuarios</h3>
                 <p><?= $userCount ?></p>
-                <a href="#">Ver todos</a>
+                <a href="usuarios.php">Ver todos</a>
             </div>
         </div>
     </div>

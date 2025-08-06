@@ -71,7 +71,10 @@ require 'conn.php';
 
   // Mostrar un slider por cada tipo
   foreach ($tipos as $tipo) {
-      product_slider(ucfirst($tipo)); // ucfirst para capitalizar la primera letra
+      echo "<section class='slider_section'>";
+      echo "<h2 style='margin-left:20px;'>".ucfirst($tipo)."</h2>";
+      product_slider($tipo);
+      echo "</section>";
   }
   ?>
 
