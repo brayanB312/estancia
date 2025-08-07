@@ -68,6 +68,10 @@ function setCart(cart) {
 }
 
 function renderCart() {
+  // Siempre sincroniza el carrito con localStorage por si fue borrado en otra pestaña
+  if (!localStorage.getItem('carrito')) {
+    setCart([]);
+  }
   const cart = getCart();
   const cartList = document.getElementById('cart-items-list');
   const cartCount = document.querySelector('.cart-count');
@@ -244,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('carrito');
             renderCart();
             updateCartContadorNavbar();
+            // Redirigir a Stripe Checkout (no a success_final.html directamente)
             var stripe = Stripe('pk_test_51RsiACAJJRFMxL6dEQQ0IBJG57QkYeLWKd8A5KGxWkhPu44BUD3iHOOolKlCLVHxZQA41TNVl9ZuHOb5R8gCtIdd00H7f9FGH4');
             console.log('[PASO 8] Stripe session creada, redirigiendo...');
             stripe.redirectToCheckout({ sessionId: data.id });

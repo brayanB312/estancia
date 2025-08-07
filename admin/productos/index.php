@@ -2,7 +2,7 @@
 session_start();
 
 // Configuración de rutas base (todo en este archivo)
-$base_url = '/estanciafrt/admin';
+$base_url = '/estancia/admin';
 $base_path = __DIR__ . '/../..'; // Ajusta según tu estructura
 
 require $base_path . '/conn.php';

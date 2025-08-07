@@ -73,7 +73,7 @@ try {
         'payment_method_types' => ['card'],
         'line_items' => $line_items,
         'mode' => 'payment',
-        'success_url' => 'http://localhost/estancia/success.html',
+        'success_url' => 'http://localhost/estancia/success_final.html?session_id={CHECKOUT_SESSION_ID}',
         'cancel_url' => 'http://localhost/estancia/cancel.html',
         'metadata' => [
             'pedido_id' => $pedido_id,

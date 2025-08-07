@@ -2,7 +2,7 @@
 session_start();
 
 // Configuración de rutas base
-$base_url = '/estanciafrt/admin';
+$base_url = '/estancia/admin';
 $base_path = __DIR__ . '/../..';
 
 require $base_path . '/conn.php';
@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <title>Agregar Producto</title>
     <base href="<?= $base_url ?>/">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    
 </head>
 <body>
     <?php include '../components/admin_navbar.php'; ?>

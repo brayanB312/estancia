@@ -71,7 +71,7 @@ $productos = $conn->query("SELECT * FROM productos")->fetchAll();
     
     <div class="container">
         <h1>Gestión de Productos</h1>
-        <a href="/productos/agregar.php" class="btn btn-primary">➕ Nuevo Producto</a>
+        <a href="productos/agregar.php" class="btn btn-primary">➕ Nuevo Producto</a>
         
         <table>
             <thead>
@@ -93,8 +93,8 @@ $productos = $conn->query("SELECT * FROM productos")->fetchAll();
                     <td>$<?= number_format($p['precio'], 2) ?></td>
                     <td><?= htmlspecialchars($p['tipo']) ?></td>
                     <td>
-                        <a href="/estancia/admin/productos/editar.php?id=<?= $p['id'] ?>" class="btn btn-edit">✏️ Editar</a>
-                        <a href="/estancia/admin/productos/eliminar.php?id=<?= $p['id'] ?>" class="btn btn-delete" onclick="return confirm('¿Eliminar este producto?')">❌ Eliminar</a>
+                        <a href="productos/editar.php?id=<?= $p['id'] ?>" class="btn btn-edit">✏️ Editar</a>
+                        <a href="productos/eliminar.php?id=<?= $p['id'] ?>" class="btn btn-delete" onclick="return confirm('¿Eliminar este producto?')">❌ Eliminar</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

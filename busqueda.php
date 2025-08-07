@@ -71,6 +71,6 @@ if ($termino !== '') {
 </section>
 
 <?php footer() ?>
-<script src="/estanciafrt/carrito.js"></script>
+<script src="/estancia/carrito.js"></script>
 </body>
 </html>
