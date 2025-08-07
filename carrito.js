@@ -31,7 +31,31 @@ function agregarAlCarrito(producto) {
   setCart(cart);
   renderCart();
   updateCartContadorNavbar();
-  alert('Producto agregado al carrito');
+  mostrarToast('Producto agregado al carrito');
+// Toast bonito para feedback
+function mostrarToast(msg) {
+  let toast = document.createElement('div');
+  toast.textContent = msg;
+  toast.style.position = 'fixed';
+  toast.style.bottom = '40px';
+  toast.style.left = '50%';
+  toast.style.transform = 'translateX(-50%)';
+  toast.style.background = '#222';
+  toast.style.color = '#fff';
+  toast.style.padding = '16px 32px';
+  toast.style.borderRadius = '8px';
+  toast.style.fontSize = '1.1rem';
+  toast.style.boxShadow = '0 2px 8px #0002';
+  toast.style.zIndex = 9999;
+  toast.style.opacity = '0';
+  toast.style.transition = 'opacity 0.3s';
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '1'; }, 10);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 1800);
+}
 }
 
 function getCart() {
@@ -65,10 +89,20 @@ function renderCart() {
         totalItems += item.cantidad;
         const article = document.createElement('article');
         article.className = 'cart-item';
-        // Si la imagen es relativa y no empieza con '/' o 'http', prepende la ruta base
-        let imagenSrc = item.imagen && item.imagen.trim() !== '' ? item.imagen : 'assets/images/logo.webp';
-        if (imagenSrc && !imagenSrc.startsWith('/') && !imagenSrc.startsWith('http')) {
-          imagenSrc = '/' + imagenSrc;
+        // Mostrar solo la imagen de la base de datos (sin fallback de logo)
+        let imagenSrc = '';
+        if (item.imagen && typeof item.imagen === 'string' && item.imagen.trim() !== '') {
+          let img = item.imagen.trim();
+          if (/^https?:\/\//i.test(img)) {
+            imagenSrc = img;
+          } else {
+            if (img.startsWith('/')) img = img.substring(1);
+            if (img.startsWith('assets/images/')) {
+              imagenSrc = img;
+            } else {
+              imagenSrc = 'assets/images/' + img;
+            }
+          }
         }
         article.innerHTML = `
           <img src="${imagenSrc}" alt="${item.nombre}" />
@@ -206,6 +240,10 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('[PASO 7] Data recibida del backend:', data);
         if (data.id && data.id.startsWith('cs_')) {
           try {
+            // Limpiar carrito antes de redirigir a Stripe
+            localStorage.removeItem('carrito');
+            renderCart();
+            updateCartContadorNavbar();
             var stripe = Stripe('pk_test_51RsiACAJJRFMxL6dEQQ0IBJG57QkYeLWKd8A5KGxWkhPu44BUD3iHOOolKlCLVHxZQA41TNVl9ZuHOb5R8gCtIdd00H7f9FGH4');
             console.log('[PASO 8] Stripe session creada, redirigiendo...');
             stripe.redirectToCheckout({ sessionId: data.id });

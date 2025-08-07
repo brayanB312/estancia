@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¡Gracias por tu compra!</title>
+  <style>
+    body { font-family: 'Poppins', Arial, sans-serif; background: #faf7f2; color: #222; text-align: center; padding: 40px; }
+    .success-box { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; display: inline-block; padding: 40px 30px; margin-top: 40px; }
+    .success-title { font-size: 2rem; margin-bottom: 10px; color: #27ae60; }
+    .success-msg { font-size: 1.1rem; margin-bottom: 20px; }
+    .pedido-num { font-weight: bold; color: #333; }
+    .btn-tienda { display: inline-block; margin-top: 25px; padding: 12px 32px; background: #222; color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+    .btn-tienda:hover { background: #27ae60; color: #fff; }
+  </style>
+</head>
+<body>
+<div class="success-box">
+  <div class="success-title">¡Pago exitoso!</div>
+  <div class="success-msg">Tu compra fue procesada correctamente.</div>
+  <div id="pedido-info">Buscando tu número de pedido...</div>
+  <a href="index.php" class="btn-tienda">Volver a la tienda</a>
+</div>
+<script>
+// Obtiene el session_id de la URL
+const params = new URLSearchParams(window.location.search);
+const session_id = params.get('session_id');
+
+if (session_id) {
+  fetch('obtener_pedido.php?session_id=' + encodeURIComponent(session_id))
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.pedido_id) {
+        document.getElementById('pedido-info').innerHTML = 'Tu número de pedido es: <span class="pedido-num">' + data.pedido_id + '</span>';
+      } else {
+        document.getElementById('pedido-info').innerHTML = 'No se pudo obtener el número de pedido.';
+      }
+    })
+    .catch(() => {
+      document.getElementById('pedido-info').innerHTML = 'No se pudo obtener el número de pedido.';
+    });
+} else {
+  document.getElementById('pedido-info').innerHTML = 'No se pudo obtener el número de pedido.';
+}
+</script>
+</body>
+</html>

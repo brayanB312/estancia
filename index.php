@@ -50,7 +50,8 @@ require 'conn.php';
                 <button class='buy-button agregar-carrito'
                         data-id='{$producto['id']}'
                         data-nombre='".htmlspecialchars($producto['nombre'])."'
-                        data-precio='{$producto['precio']}'>  
+                        data-precio='{$producto['precio']}'
+                        data-imagen='".htmlspecialchars($producto['imagen'])."'>  
                     Agregar al carrito    
                 </button>
               </div>
@@ -69,10 +70,10 @@ require 'conn.php';
   $stmt->execute();
   $tipos = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-  // Mostrar un slider por cada tipo
+  
   foreach ($tipos as $tipo) {
       echo "<section class='slider_section'>";
-      echo "<h2 style='margin-left:20px;'>".ucfirst($tipo)."</h2>";
+      // Solo centrado, sin el de la izquierda
       product_slider($tipo);
       echo "</section>";
   }

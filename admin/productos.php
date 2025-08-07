@@ -67,11 +67,11 @@ $productos = $conn->query("SELECT * FROM productos")->fetchAll();
     </style>
 </head>
 <body>
-    <?php include __DIR__ . '/../components/admin_navbar.php'; ?> <!-- Ruta corregida -->
+    <?php include __DIR__ . '/../components/admin_navbar.php'; ?>
     
     <div class="container">
         <h1>Gestión de Productos</h1>
-        <a href="/estancia/admin/productos/agregar.php" class="btn btn-primary">➕ Nuevo Producto</a>
+        <a href="/productos/agregar.php" class="btn btn-primary">➕ Nuevo Producto</a>
         
         <table>
             <thead>
