@@ -16,57 +16,70 @@ body {
 /*MAIN SECTION*/
 .main_section {
   width: 100%;
-  margin-top: 100px;
+  margin-top: 80px; /* Reducir margen superior */
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 60px 40px; /* Aumentar padding */
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 60px; /* Aumentar gap entre elementos */
+  background: linear-gradient(135deg, #F8F5F0 0%, #f0ebe5 100%); /* Sutil gradiente */
+  min-height: 70vh; /* Altura mínima para más presencia */
 }
 
 .main1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 30px; /* Aumentar gap interno */
   flex: 1;
-  min-width: 300px;
+  min-width: 350px; /* Aumentar ancho mínimo */
+  max-width: 600px; /* Limitar ancho máximo */
 }
 
 .main1 h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.2;
+  font-size: clamp(3rem, 6vw, 5rem); /* Hacer título más grande */
+  line-height: 1.1;
+  font-weight: 800; /* Más bold */
+  color: #1a1a1a;
+  margin-bottom: 20px;
 }
 
 .main1 button {
-  padding: 12px 15px;
-  width: 200px;
+  padding: 16px 32px; /* Botón más grande */
+  width: 250px; /* Ancho mayor */
+  font-size: 1.1rem; /* Texto más grande */
   cursor: pointer;
   background-color: #000;
   border: none;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 12px; /* Bordes más redondeados */
   color: #FFF;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra */
 }
 
 .main1 button:hover {
   background-color: #222222;
+  transform: translateY(-2px); /* Efecto hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .main2 {
   flex: 1;
   display: flex;
   justify-content: center;
-  min-width: 300px;
+  align-items: center;
+  min-width: 400px; /* Aumentar ancho mínimo */
+  max-width: 700px; /* Limitar ancho máximo */
 }
 
 .main2 img {
   width: 100%;
-  max-width: 600px;
+  max-width: 650px; /* Imagen más grande */
   height: auto;
   object-fit: contain;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1)); /* Sombra a la imagen */
 }
 
 /*PRODUCTOS DESTACADOS*/
@@ -230,82 +243,47 @@ a {
   .main_section {
     flex-direction: column;
     text-align: center;
-    gap: 30px;
-    margin-top: 80px;
+    gap: 40px;
+    margin-top: 60px;
+    padding: 40px 20px;
+    min-height: 60vh;
   }
   
   .main1, .main2 {
     min-width: unset;
+    max-width: 100%;
   }
   
   .main1 button {
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
   }
   
-  .productos_destacados {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    padding: 20px 10px;
-  }
-  
-  .card {
-    height: 540px; /* Altura fija para todas las cards */
-  }
-  
-  .card_image_wrapper {
-    height: 240px;
-    padding: 8px;
+  .main2 img {
+    max-width: 500px;
   }
 }
 
 @media (max-width: 600px) {
   .main_section {
-    margin-top: 60px;
-    padding: 15px;
+    margin-top: 40px;
+    padding: 30px 15px;
+    gap: 30px;
+    min-height: 50vh;
   }
   
   .main1 h1 {
     text-align: center;
+    margin-bottom: 15px;
   }
   
-  .productos_destacados {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 15px 5px;
+  .main1 button {
+    font-size: 1rem;
+    padding: 14px 24px;
   }
   
-  .card {
-    max-width: 100%;
-    height: 520px; /* Altura fija para todas las cards */
-  }
-  
-  .card_image_wrapper {
-    height: 240px;
-    padding: 12px;
-  }
-  
-  .card_content {
-    padding: 15px;
-  }
-  
-  .card_content h3 {
-    font-size: 1.1rem;
-    height: 28px;
-  }
-  
-  .card_content p {
-    height: 50px;
-  }
-  
-  .card_content span {
-    height: 28px;
-  }
-  
-  .card_content button {
-    padding: 10px 12px;
-    font-size: 0.9rem;
-    height: 44px;
+  .main2 img {
+    max-width: 400px;
   }
 }
 

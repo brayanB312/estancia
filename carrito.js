@@ -9,17 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const productoId = e.target.getAttribute('data-id');
       const nombre = e.target.getAttribute('data-nombre') || '';
       const precio = parseFloat(e.target.getAttribute('data-precio')) || 0;
-      const talla = e.target.getAttribute('data-talla') || '';
-      const color = e.target.getAttribute('data-color') || '';
       const imagen = e.target.getAttribute('data-imagen') || '';
-      agregarAlCarrito({id: productoId, nombre, precio, talla, color, imagen});
+      agregarAlCarrito({id: productoId, nombre, precio, imagen});
     }
   });
 });
 
 function agregarAlCarrito(producto) {
   let cart = getCart();
-  const idx = cart.findIndex(item => item.id === producto.id && item.talla === producto.talla && item.color === producto.color);
+  const idx = cart.findIndex(item => item.id === producto.id);
   if (idx !== -1) {
     cart[idx].cantidad += 1;
   } else {
@@ -112,7 +110,6 @@ function renderCart() {
           <img src="${imagenSrc}" alt="${item.nombre}" />
           <div class="item-info">
             <div class="item-name">${item.nombre}</div>
-            <div class="item-details">Talla: ${item.talla || '-'} &nbsp;|&nbsp; Color: ${item.color || '-'}</div>
             <div class="quantity-control">
               <button aria-label="Disminuir cantidad" onclick="updateQuantity(${idx}, -1)">−</button>
               <input type="text" readonly value="${item.cantidad}" aria-label="Cantidad de ${item.nombre}" />
