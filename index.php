@@ -11,7 +11,7 @@ require 'conn.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tienda</title>
-  <link rel="stylesheet" href="styles/index.css?v=1.5">
+  <link rel="stylesheet" href="styles/index.css?v=1.6">
 </head>
 <body>
 
@@ -31,7 +31,7 @@ require 'conn.php';
     <div class="productos_destacados" id="feat">
       <?php 
         // Obtener productos destacados de la base de datos
-        $query = "SELECT * FROM productos LIMIT 6";
+        $query = "SELECT * FROM productos LIMIT 8";
         $stmt = $conn->prepare($query);
         $stmt->execute();
         $productos = $stmt->fetchAll();
@@ -41,7 +41,7 @@ require 'conn.php';
           <a href='producto.php?id={$producto['id']}'>
             <div class='card'>
               <div class='card_image_wrapper'>
-                <img src='{$producto['imagen']}' alt='{$producto['nombre']}'>
+                <img src='{$producto['imagen']}' alt='{$producto['nombre']}' class='featured-image'>
               </div>
               <div class='card_content'>
                 <h3>{$producto['nombre']}</h3>
