@@ -39,7 +39,6 @@ body {
   min-width: 300px;
 }
 
-/* Encabezado carrito */
 .cart-header {
   display: flex;
   align-items: center;
@@ -65,7 +64,6 @@ body {
   white-space: nowrap;
 }
 
-/* Cada producto */
 .cart-item {
   display: flex;
   align-items: center;
@@ -106,7 +104,6 @@ body {
   margin-top: 4px;
 }
 
-/* Controles cantidad */
 .quantity-control {
   display: flex;
   align-items: center;
@@ -142,7 +139,6 @@ body {
   font-size: 1rem;
 }
 
-/* Precio total del producto */
 .item-price {
   font-weight: 700;
   font-size: 1.1rem;
@@ -159,7 +155,6 @@ body {
   margin-top: 3px;
 }
 
-/* Icono eliminar */
 .remove-item {
   cursor: pointer;
   color: #d33;
@@ -176,7 +171,6 @@ body {
   background: #ffe6e6;
 }
 
-/* Resumen pedido */
 .order-summary h2 {
   font-weight: 900;
   font-size: 1.4rem;
@@ -200,7 +194,6 @@ body {
   margin: 20px 0;
 }
 
-/* Formulario */
 #checkout-form {
   margin-bottom: 1em;
 }
@@ -230,7 +223,6 @@ body {
   border-color: #333;
 }
 
-/* Botones */
 .btn-primary, .btn-secondary {
   width: 100%;
   padding: 14px 0;
@@ -264,7 +256,6 @@ body {
   background-color: #f0f0f0;
 }
 
-/* RESPONSIVE DESIGN */
 @media (max-width: 900px) {
   .container {
     flex-direction: column;

@@ -13,7 +13,10 @@ if ($db->connect_error) {
 }
 
 // Obtener datos del POST
+
 $carrito = isset($_POST['carrito']) ? json_decode($_POST['carrito'], true) : [];
+$cliente_nombre = isset($_POST['cliente_nombre']) ? $_POST['cliente_nombre'] : '';
+$cliente_email = isset($_POST['cliente_email']) ? $_POST['cliente_email'] : '';
 $direccion_calle = isset($_POST['direccion_calle']) ? $_POST['direccion_calle'] : '';
 $direccion_numero = isset($_POST['direccion_numero']) ? $_POST['direccion_numero'] : '';
 $direccion_colonia = isset($_POST['direccion_colonia']) ? $_POST['direccion_colonia'] : '';
@@ -30,23 +33,21 @@ $total += $total * 0.10; // Agregar 10% de impuestos
 
 try {
     // 1. Crear el pedido en la base de datos
-    $stmt = $db->prepare("INSERT INTO pedidos (total, direccion_calle, direccion_numero, direccion_colonia, direccion_ciudad, direccion_estado, direccion_cp) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("dssssss", $total, $direccion_calle, $direccion_numero, $direccion_colonia, $direccion_ciudad, $direccion_estado, $direccion_cp);
+    $stmt = $db->prepare("INSERT INTO pedidos (total, cliente_nombre, cliente_email, direccion_calle, direccion_numero, direccion_colonia, direccion_ciudad, direccion_estado, direccion_cp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("dssssssss", $total, $cliente_nombre, $cliente_email, $direccion_calle, $direccion_numero, $direccion_colonia, $direccion_ciudad, $direccion_estado, $direccion_cp);
     $stmt->execute();
     $pedido_id = $db->insert_id;
     $stmt->close();
 
     // 2. Insertar los productos del pedido
-    $stmt = $db->prepare("INSERT INTO pedido_productos (pedido_id, producto_id, cantidad, precio_unitario, talla, color) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $db->prepare("INSERT INTO pedido_productos (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
     foreach ($carrito as $item) {
         $stmt->bind_param(
-            "iiidss",
+            "iiid",
             $pedido_id,
             $item['id'],
             $item['cantidad'],
-            $item['precio'],
-            $item['talla'],
-            $item['color']
+            $item['precio']
         );
         $stmt->execute();
     }
@@ -77,6 +78,8 @@ try {
         'cancel_url' => 'http://localhost/estancia/cancel.html',
         'metadata' => [
             'pedido_id' => $pedido_id,
+            'cliente_nombre' => $cliente_nombre,
+            'cliente_email' => $cliente_email,
             'direccion_calle' => $direccion_calle,
             'direccion_numero' => $direccion_numero,
             'direccion_colonia' => $direccion_colonia,

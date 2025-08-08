@@ -1,8 +1,9 @@
+
 document.addEventListener('DOMContentLoaded', function() {
   renderCart();
   updateCartContadorNavbar();
 
-  // Manejar clic en botones "Agregar al carrito"
+  
   document.addEventListener('click', function(e) {
     if (e.target.classList.contains('agregar-carrito')) {
       e.preventDefault();
@@ -13,6 +14,56 @@ document.addEventListener('DOMContentLoaded', function() {
       agregarAlCarrito({id: productoId, nombre, precio, imagen});
     }
   });
+
+  
+  const checkoutForm = document.getElementById('checkout-form');
+  if (checkoutForm) {
+    checkoutForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const cliente_nombre = document.getElementById('cliente_nombre').value.trim();
+      const cliente_email = document.getElementById('cliente_email').value.trim();
+      const direccion_calle = document.getElementById('direccion_calle').value.trim();
+      const direccion_numero = document.getElementById('direccion_numero').value.trim();
+      const direccion_colonia = document.getElementById('direccion_colonia').value.trim();
+      const direccion_ciudad = document.getElementById('direccion_ciudad').value.trim();
+      const direccion_estado = document.getElementById('direccion_estado').value.trim();
+      const direccion_cp = document.getElementById('direccion_cp').value.trim();
+
+      if (!cliente_nombre || !cliente_email) {
+        mostrarToast('Por favor ingresa tu nombre y correo electrónico.');
+        return;
+      }
+
+      const carrito = getCart();
+
+      fetch('stripe_checkout.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          carrito: JSON.stringify(carrito),
+          cliente_nombre,
+          cliente_email,
+          direccion_calle,
+          direccion_numero,
+          direccion_colonia,
+          direccion_ciudad,
+          direccion_estado,
+          direccion_cp
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.id && data.id.startsWith('cs_')) {
+          const stripe = Stripe('pk_test_51RsiACAJJRFMxL6dEQQ0IBJG57QkYeLWKd8A5KGxWkhPu44BUD3iHOOolKlCLVHxZQA41TNVl9ZuHOb5R8gCtIdd00H7f9FGH4');
+          stripe.redirectToCheckout({ sessionId: data.id });
+        } else {
+          mostrarToast(data.error || 'Error al procesar el pago');
+        }
+      })
+      .catch(() => mostrarToast('Error de conexión.'));
+    });
+  }
 });
 
 function agregarAlCarrito(producto) {
@@ -30,7 +81,7 @@ function agregarAlCarrito(producto) {
   renderCart();
   updateCartContadorNavbar();
   mostrarToast('Producto agregado al carrito');
-// Toast bonito para feedback
+
 function mostrarToast(msg) {
   let toast = document.createElement('div');
   toast.textContent = msg;
@@ -66,7 +117,7 @@ function setCart(cart) {
 }
 
 function renderCart() {
-  // Siempre sincroniza el carrito con localStorage por si fue borrado en otra pestaña
+  
   if (!localStorage.getItem('carrito')) {
     setCart([]);
   }
@@ -91,7 +142,7 @@ function renderCart() {
         totalItems += item.cantidad;
         const article = document.createElement('article');
         article.className = 'cart-item';
-        // Mostrar solo la imagen de la base de datos (sin fallback de logo)
+        
         let imagenSrc = '';
         if (item.imagen && typeof item.imagen === 'string' && item.imagen.trim() !== '') {
           let img = item.imagen.trim();
@@ -126,7 +177,7 @@ function renderCart() {
       });
     }
   } else {
-    // Si no hay lista de carrito, igual contamos los items
+    
     cart.forEach(item => {
       totalItems += item.cantidad;
       subtotal += item.precio * item.cantidad;
@@ -136,7 +187,7 @@ function renderCart() {
   if (cartCount) cartCount.textContent = `${totalItems} artículo${totalItems === 1 ? '' : 's'}`;
   if (cartContador) cartContador.textContent = totalItems;
   if (subtotalDiv) subtotalDiv.textContent = `$${subtotal.toFixed(2)}`;
-  const tax = subtotal * 0.10; // 10% impuestos
+  const tax = subtotal * 0.10;
   if (taxDiv) taxDiv.textContent = `$${tax.toFixed(2)}`;
   if (totalDiv) totalDiv.textContent = `$${(subtotal + tax).toFixed(2)}`;
 }
@@ -167,11 +218,11 @@ window.removeItem = function(idx) {
   updateCartContadorNavbar();
 }
 
-// Stripe Checkout integration
 
-// Stripe Checkout integration desde cero
 
-// Stripe Checkout paso por paso
+
+ 
+ 
 document.addEventListener('DOMContentLoaded', function() {
   var checkoutForm = document.getElementById('checkout-form');
   if (checkoutForm) {
@@ -179,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
       console.log('[PASO 1] Submit iniciado');
 
-      // 1. Obtener datos del carrito y dirección
+      
       var carrito = localStorage.getItem('carrito');
       var calle = document.getElementById('direccion_calle')?.value.trim() || '';
       var numero = document.getElementById('direccion_numero')?.value.trim() || '';
@@ -189,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var cp = document.getElementById('direccion_cp')?.value.trim() || '';
       console.log('[PASO 2] Datos obtenidos:', {carrito, calle, numero, colonia, ciudad, estado, cp});
 
-      // 2. Validaciones
+      
       if (!carrito || carrito === '[]') {
         alert('El carrito está vacío');
         console.error('[ERROR] Carrito vacío');
@@ -202,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       console.log('[PASO 3] Validaciones OK');
 
-      // 3. Guardar dirección en localStorage para success.html
+      
       localStorage.setItem('direccion_calle', calle);
       localStorage.setItem('direccion_numero', numero);
       localStorage.setItem('direccion_colonia', colonia);
@@ -211,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem('direccion_cp', cp);
       console.log('[PASO 4] Dirección guardada en localStorage');
 
-      // 4. Preparar parámetros para el backend
+      
       var params =
         'carrito=' + encodeURIComponent(carrito) +
         '&direccion_calle=' + encodeURIComponent(calle) +
@@ -222,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
         '&direccion_cp=' + encodeURIComponent(cp);
       console.log('[PASO 5] Params preparados:', params);
 
-      // 5. Enviar datos al backend
+      
       fetch('stripe_checkout.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -241,11 +292,11 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('[PASO 7] Data recibida del backend:', data);
         if (data.id && data.id.startsWith('cs_')) {
           try {
-            // Limpiar carrito antes de redirigir a Stripe
+            
             localStorage.removeItem('carrito');
             renderCart();
             updateCartContadorNavbar();
-            // Redirigir a Stripe Checkout (no a success_final.html directamente)
+            
             var stripe = Stripe('pk_test_51RsiACAJJRFMxL6dEQQ0IBJG57QkYeLWKd8A5KGxWkhPu44BUD3iHOOolKlCLVHxZQA41TNVl9ZuHOb5R8gCtIdd00H7f9FGH4');
             console.log('[PASO 8] Stripe session creada, redirigiendo...');
             stripe.redirectToCheckout({ sessionId: data.id });

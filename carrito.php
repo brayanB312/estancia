@@ -51,6 +51,14 @@ include 'components/footer.php';
 
     <form id="checkout-form" style="margin-bottom:1em;">
       <div style="margin-bottom:0.5em;">
+        <label for="cliente_nombre" style="display:block;">Nombre completo:</label>
+        <input type="text" id="cliente_nombre" name="cliente_nombre" required style="width:100%;padding:8px;" placeholder="Nombre completo">
+      </div>
+      <div style="margin-bottom:0.5em;">
+        <label for="cliente_email" style="display:block;">Correo electrónico:</label>
+        <input type="email" id="cliente_email" name="cliente_email" required style="width:100%;padding:8px;" placeholder="Correo electrónico">
+      </div>
+      <div style="margin-bottom:0.5em;">
         <label for="direccion_calle" style="display:block;">Calle:</label>
         <input type="text" id="direccion_calle" name="direccion_calle" required style="width:100%;padding:8px;" placeholder="Calle">
       </div>

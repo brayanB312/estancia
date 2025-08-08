@@ -55,17 +55,15 @@ try {
     foreach ($carrito as $item) {
         $stmt = $conn->prepare("
             INSERT INTO pedido_productos (
-                pedido_id, producto_id, cantidad, precio_unitario, talla, color
-            ) VALUES (?, ?, ?, ?, ?, ?)
+                pedido_id, producto_id, cantidad, precio_unitario
+            ) VALUES (?, ?, ?, ?)
         ");
         $stmt->bind_param(
-            'iiidss',
+            'iiid',
             $pedido_id,
             $item['id'],
             $item['cantidad'],
-            $item['precio'],
-            $item['talla'],
-            $item['color']
+            $item['precio']
         );
         $stmt->execute();
     }
