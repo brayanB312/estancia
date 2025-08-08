@@ -2,7 +2,7 @@
 session_start();
 include 'components/navbar.php';
 include 'components/footer.php';
-include 'components/product_slider_sin_botones.php'; // Cambiado a la versión sin botones
+include 'components/product_slider_sin_botones.php'; 
 
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -37,7 +37,7 @@ if(isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($nombre); ?></title>
-    <link rel="stylesheet" href="styles/producto.css">
+    <link rel="stylesheet" href="styles/producto.css?v=1.2">
 </head>
 <body>
     <?php navbar(); ?>
@@ -54,7 +54,8 @@ if(isset($_GET['id'])) {
             <button class="btn_agregar agregar-carrito"
                     data-id="<?php echo $id; ?>"
                     data-nombre="<?php echo htmlspecialchars($nombre); ?>"
-                    data-precio="<?php echo $precio; ?>">
+                    data-precio="<?php echo $precio; ?>"
+                    data-imagen="<?php echo htmlspecialchars($imagen); ?>">
                 Agregar al carrito
             </button>
         </div>
@@ -64,7 +65,7 @@ if(isset($_GET['id'])) {
         <h2>Productos similares:</h2>
     </div>
 
-    <?php product_slider_sin_botones($tipo); // Usa la versión sin botones ?>
+    <?php product_slider_sin_botones($tipo);  ?>
 
     <?php footer(); ?>
     <script src="carrito.js"></script>
