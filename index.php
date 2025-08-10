@@ -11,7 +11,8 @@ require 'conn.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tienda</title>
-  <link rel="stylesheet" href="styles/index.css?v=1.6">
+    <link rel="stylesheet" href="styles/index.css?v=1.6">
+
 </head>
 <body>
 
@@ -30,7 +31,7 @@ require 'conn.php';
   <section class="featured_section">
     <div class="productos_destacados" id="feat">
       <?php 
-        // Obtener productos destacados de la base de datos
+        
         $query = "SELECT * FROM productos LIMIT 8";
         $stmt = $conn->prepare($query);
         $stmt->execute();
@@ -64,7 +65,7 @@ require 'conn.php';
   </section>
 
   <?php
-  // Obtener todos los tipos distintos de productos
+  
   $query = "SELECT DISTINCT tipo FROM productos ORDER BY tipo";
   $stmt = $conn->prepare($query);
   $stmt->execute();
@@ -73,7 +74,7 @@ require 'conn.php';
   
   foreach ($tipos as $tipo) {
       echo "<section class='slider_section'>";
-      // Solo centrado, sin el de la izquierda
+      
       product_slider($tipo);
       echo "</section>";
   }
